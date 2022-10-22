@@ -1,5 +1,7 @@
 package postcodesio
 
+// Postcodes
+
 // PostcodeLookupResponse represents the response of the Postcode Lookup API method.
 type PostcodeLookupResponse struct {
 	Status int      `json:"status"`

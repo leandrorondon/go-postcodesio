@@ -9,6 +9,7 @@ import (
 // PostcodeLookup This uniquely identifies a postcode.
 // Returns a single postcode entity for a given postcode (case, space insensitive).
 // If no postcode is found it returns "404" response code.
+// GET https://api.postcodes.io/postcodes/:postcode
 func (c *Client) PostcodeLookup(ctx context.Context, postcode string) (*PostcodeLookupResponse, error) {
 	url := fmt.Sprintf("%s/postcodes/%s", c.baseURL, postcode)
 
@@ -27,13 +28,10 @@ func (c *Client) PostcodeLookup(ctx context.Context, postcode string) (*Postcode
 }
 
 // BulkPostcodeLookup Accepts a JSON object containing an array of postcodes. Returns a list of matching postcodes and
-// respective available data.
-// Accepts up to 100 postcodes.
-func (c *Client) BulkPostcodeLookup(ctx context.Context, postcodes []string) (*BulkPostcodeLookupResponse, error) {
+// respective available data. Accepts up to 100 postcodes.
+// POST https://api.postcodes.io/postcodes
+func (c *Client) BulkPostcodeLookup(ctx context.Context, bulkRequest BulkPostCodeLookupRequest) (*BulkPostcodeLookupResponse, error) {
 	url := fmt.Sprintf("%s/postcodes", c.baseURL)
-	bulkRequest := BulkPostCodeLookupRequest{
-		Postcodes: postcodes,
-	}
 
 	b, err := c.post(ctx, url, bulkRequest)
 	if err != nil {

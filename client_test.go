@@ -135,7 +135,10 @@ func TestBulkPostcodeLookup(t *testing.T) {
 	}
 
 	c := postcodesio.NewTestClient(srv.URL)
-	r, err := c.BulkPostcodeLookup(context.Background(), []string{"NW1 6XE", "NW16XE"})
+	bulkRequest := postcodesio.BulkPostCodeLookupRequest{
+		Postcodes: []string{"NW1 6XE", "NW16XE"},
+	}
+	r, err := c.BulkPostcodeLookup(context.Background(), bulkRequest)
 
 	assert.NoError(t, err)
 	assert.EqualValues(t, expected, r)
