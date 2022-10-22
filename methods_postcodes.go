@@ -52,3 +52,34 @@ func (c *Client) BulkPostcodeLookup(ctx context.Context, bulkRequest BulkPostCod
 
 	return &r, nil
 }
+
+// ReverseGeocoding Returns nearest postcodes for a given longitude and latitude.
+// GET https://api.postcodes.io/postcodes?lon=:longitude&lat=:latitude
+func (c *Client) ReverseGeocoding(ctx context.Context, request ReverseGeocodingRequest) (*ReverseGeocodingResponse, error) {
+	url := fmt.Sprintf("%s/postcodes?lon=%g&lat=%g", c.baseURL, request.Longitude, request.Latitude)
+
+	if request.Limit > 0 {
+		url = fmt.Sprintf("%s&limit=%d", url, request.Limit)
+	}
+
+	if request.Radius > 0 {
+		url = fmt.Sprintf("%s&radius=%g", url, request.Radius)
+	}
+
+	if request.WideSearch {
+		url = fmt.Sprintf("%s&widesearch=true", url)
+	}
+
+	b, err := c.get(ctx, url)
+	if err != nil {
+		return nil, err
+	}
+
+	var r ReverseGeocodingResponse
+	err = json.Unmarshal(b, &r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &r, nil
+}

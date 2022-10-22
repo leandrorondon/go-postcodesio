@@ -28,6 +28,13 @@ type Postcode struct {
 	Codes                     Codes   `json:"codes"`
 }
 
+// ReversePostcode (Ordnance Survey Postcode Directory Dataset).
+// Data points returned by the Reverse Geocoding endpoints.
+type ReversePostcode struct {
+	Postcode
+	Distance float64 `json:"distance"`
+}
+
 // Codes Represents an ID or Code associated with the postcode.
 type Codes struct {
 	AdminCounty   string `json:"admin_county,omitempty"`
