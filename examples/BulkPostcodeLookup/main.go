@@ -10,10 +10,32 @@ import (
 
 func main() {
 	client := postcodesio.New()
+
+	bulkPostCodeLookup(client)
+	bulkPostCodeLookupWithFilters(client)
+
+}
+
+func bulkPostCodeLookup(c *postcodesio.Client) {
 	bulkRequest := postcodesio.BulkPostCodeLookupRequest{
 		Postcodes: []string{"NW1 6XE", "SW1A 0AA"},
 	}
-	res, err := client.BulkPostcodeLookup(context.Background(), bulkRequest)
+	res, err := c.BulkPostcodeLookup(context.Background(), bulkRequest)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, r := range res.Result {
+		fmt.Printf("%s: %#v\n", r.Query, r.Result)
+	}
+}
+
+func bulkPostCodeLookupWithFilters(c *postcodesio.Client) {
+	bulkRequest := postcodesio.BulkPostCodeLookupRequest{
+		Postcodes: []string{"NW1 6XE"},
+		Filters:   []string{"postcode", "country", "longitude", "latitude"},
+	}
+	res, err := c.BulkPostcodeLookup(context.Background(), bulkRequest)
 	if err != nil {
 		log.Fatal(err)
 	}

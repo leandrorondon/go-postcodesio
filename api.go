@@ -11,6 +11,7 @@ type PostcodeLookupResponse struct {
 // BulkPostCodeLookupRequest is the input for the Bulk Postcode Lookup API method.
 type BulkPostCodeLookupRequest struct {
 	Postcodes []string `json:"postcodes"`
+	Filters   []string `json:"-"`
 }
 
 // BulkPostcodeLookupResponse represents the response of the Bulk Postcode Lookup API method.

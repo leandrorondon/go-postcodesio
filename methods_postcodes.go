@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 // PostcodeLookup This uniquely identifies a postcode.
@@ -32,6 +33,11 @@ func (c *Client) PostcodeLookup(ctx context.Context, postcode string) (*Postcode
 // POST https://api.postcodes.io/postcodes
 func (c *Client) BulkPostcodeLookup(ctx context.Context, bulkRequest BulkPostCodeLookupRequest) (*BulkPostcodeLookupResponse, error) {
 	url := fmt.Sprintf("%s/postcodes", c.baseURL)
+
+	if len(bulkRequest.Filters) > 0 {
+		filters := strings.Join(bulkRequest.Filters, ",")
+		url = fmt.Sprintf("%s?filter=%s", url, filters)
+	}
 
 	b, err := c.post(ctx, url, bulkRequest)
 	if err != nil {
